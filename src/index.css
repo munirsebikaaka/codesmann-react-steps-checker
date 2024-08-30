@@ -30,3 +30,12 @@ code {
   position: absolute;
   width: 76%;
 }
+.checked {
+  background-color: red;
+}
+.show-form {
+  display: block;
+}
+.hide-form {
+  display: none;
+}
