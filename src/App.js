@@ -10,9 +10,13 @@ const quatesArr = [
   { quote: "ddddd", owner: "adams" },
 ];
 export default function App() {
+  const [first, setFirst] = useState("");
+  const [last, setLast] = useState("");
+  const [age, setAge] = useState("");
+
   const [log, setLog] = useState(1);
   function increaseLog() {
-    if (log < 4) setLog((s) => s + 1);
+    if (log < 4 && first) setLog((s) => s + 1);
   }
   function decreaseLog() {
     if (log > 1) setLog((s) => s - 1);
@@ -25,8 +29,17 @@ export default function App() {
         onIncreaseLog={increaseLog}
         onDecreaseLog={decreaseLog}
       />
-      <RegstrationCell data={detailsArr} onDisLog={log} />
-      <GenerationRandomQuate onLogGen={log} />
+      <RegstrationCell
+        data={detailsArr}
+        onDisLog={log}
+        onFirst={first}
+        onSetFirst={setFirst}
+        onLast={last}
+        onSetLast={setLast}
+        onAge={age}
+        onSetAge={setAge}
+      />
+      <GenerationRandomQuate onLogGen={log} onAge={age} onLast={last} />
     </div>
   );
 }
@@ -47,62 +60,65 @@ function Steps({ onLog, onIncreaseLog, onDecreaseLog }) {
         </p>
         {/* <span className="defBar"></span> */}
       </div>
-      <button onClick={onDecreaseLog}>SUBTRACT</button>
-      <button onClick={onIncreaseLog}>ADD</button>
+      <button onClick={onDecreaseLog}>LEFT</button>
+      <button onClick={onIncreaseLog}>RIGHT</button>
     </div>
   );
 }
 
-function RegstrationCell({ data, onDisLog }) {
-  const [first, setFirst] = useState("");
-  const [last, setLast] = useState("");
-  const [district, setDistrict] = useState("");
-
+function RegstrationCell({
+  data,
+  onDisLog,
+  onFirst,
+  onSetFirst,
+  onLast,
+  onSetLast,
+  onAge,
+  onSetAge,
+}) {
   return (
     <div>
       <input
         className={onDisLog === 1 ? "show-form" : "hide-form"}
         type={data[0].type}
         placeholder={data[0].placeholder}
-        value={first}
-        onChange={(e) => setFirst(e.target.value)}
+        value={onFirst}
+        onChange={(e) => onSetFirst(e.target.value)}
       />
 
       <input
         className={onDisLog === 2 ? "show-form" : "hide-form"}
         type={data[1].type}
         placeholder={data[1].placeholder}
-        value={last}
-        onChange={(e) => setLast(e.target.value)}
+        value={onLast}
+        onChange={(e) => onSetLast(e.target.value)}
       />
 
       <input
         className={onDisLog === 3 ? "show-form" : "hide-form"}
         type={data[2].type}
         placeholder={data[2].placeholder}
-        value={district}
-        onChange={(e) => setDistrict(e.target.value)}
+        value={onAge}
+        onChange={(e) => onSetAge(e.target.value)}
       />
     </div>
   );
 }
-function GenerationRandomQuate({ onLogGen }) {
-  let gen;
-  gen = quatesArr[Math.floor(Math.random() * quatesArr.length)];
-  console.log(gen);
-
-  function hundleDefualt(e) {
-    e.preventDefault();
+function GenerationRandomQuate({ onLogGen, onAge, onLast }) {
+  let [gen, setGen] = useState([]);
+  function genFunc(arr) {
+    if (onAge && onLast)
+      setGen(() => (gen = arr[Math.floor(Math.random() * arr.length)]));
+    else
+      alert(
+        "Please fill in all the inputs for a clear outcome of your details!!"
+      );
   }
-
   return (
-    <form
-      className={onLogGen === 4 ? "show-form" : "hide-form"}
-      onSubmit={hundleDefualt}
-    >
+    <div className={onLogGen === 4 ? "show-form" : "hide-form"}>
       <p>{gen.quote}</p>
       <h1>{gen.owner}</h1>
-      <button>codesmann</button>
-    </form>
+      <button onClick={() => genFunc(quatesArr)}>GENERATE</button>
+    </div>
   );
 }
