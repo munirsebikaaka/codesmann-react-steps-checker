@@ -16,19 +16,15 @@ export default function App() {
 
   const [log, setLog] = useState(1);
   function increaseLog() {
-    if (log < 4 && first) setLog((s) => s + 1);
+    if (log < 5 && first) setLog((s) => s + 1);
   }
   function decreaseLog() {
     if (log > 1) setLog((s) => s - 1);
   }
 
   return (
-    <div>
-      <Steps
-        onLog={log}
-        onIncreaseLog={increaseLog}
-        onDecreaseLog={decreaseLog}
-      />
+    <div className="main-body">
+      <Steps onLog={log} />
       <RegstrationCell
         data={detailsArr}
         onDisLog={log}
@@ -40,28 +36,35 @@ export default function App() {
         onSetAge={setAge}
       />
       <GenerationRandomQuate onLogGen={log} onAge={age} onLast={last} />
+      <BtnCell onIncreaseLog={increaseLog} onDecreaseLog={decreaseLog} />
     </div>
   );
 }
 
-function Steps({ onLog, onIncreaseLog, onDecreaseLog }) {
+function Steps({ onLog }) {
   return (
-    <div>
+    <div className="steps-cell">
       <div className="steps">
         <p className="checked">tic</p>
-        <p className={onLog >= 2 ? "checked" : ""}>
+        <p className={onLog >= 2 ? "checked" : "step"}>
           {onLog >= 2 ? "tic" : "ex"}
         </p>
-        <p className={onLog >= 3 ? "checked" : ""}>
+        <p className={onLog >= 3 ? "checked" : "step"}>
           {onLog >= 3 ? "tic" : "ex"}
         </p>
-        <p className={onLog >= 4 ? "checked" : ""}>
+        <p className={onLog >= 4 ? "checked" : "step"}>
           {onLog >= 4 ? "tic" : "ex"}
         </p>
-        {/* <span className="defBar"></span> */}
+        <p className={onLog >= 5 ? "checked" : "step"}>
+          {onLog >= 5 ? "Finised" : "ex"}
+        </p>
+        <span className="defBar"></span>
+        <span
+          className={`${onLog >= 2 ? "accBar" : ""} ${
+            onLog >= 3 ? "step3" : ""
+          } ${onLog >= 4 ? "step4" : ""}`}
+        ></span>
       </div>
-      <button onClick={onDecreaseLog}>LEFT</button>
-      <button onClick={onIncreaseLog}>RIGHT</button>
     </div>
   );
 }
@@ -77,7 +80,7 @@ function RegstrationCell({
   onSetAge,
 }) {
   return (
-    <div>
+    <div className="input-element">
       <input
         className={onDisLog === 1 ? "show-form" : "hide-form"}
         type={data[0].type}
@@ -118,7 +121,17 @@ function GenerationRandomQuate({ onLogGen, onAge, onLast }) {
     <div className={onLogGen === 4 ? "show-form" : "hide-form"}>
       <p>{gen.quote}</p>
       <h1>{gen.owner}</h1>
-      <button onClick={() => genFunc(quatesArr)}>GENERATE</button>
+      <button className="btn-quote" onClick={() => genFunc(quatesArr)}>
+        GENERATE
+      </button>
+    </div>
+  );
+}
+function BtnCell({ onDecreaseLog, onIncreaseLog }) {
+  return (
+    <div className="btn-cell">
+      <button onClick={onDecreaseLog}>LEFT</button>
+      <button onClick={onIncreaseLog}>RIGHT</button>
     </div>
   );
 }
