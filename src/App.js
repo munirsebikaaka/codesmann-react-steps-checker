@@ -16,7 +16,8 @@ export default function App() {
 
   const [log, setLog] = useState(1);
   function increaseLog() {
-    if (log < 5 && first) setLog((s) => s + 1);
+    if (!first) return alert("Please fill in the inputs");
+    if (log < 5) setLog((s) => s + 1);
   }
   function decreaseLog() {
     if (log > 1) setLog((s) => s - 1);
@@ -59,11 +60,13 @@ function Steps({ onLog }) {
           {onLog >= 5 ? "Finised" : "ex"}
         </p>
         <span className="defBar"></span>
-        <span
-          className={`${onLog >= 2 ? "accBar" : ""} ${
-            onLog >= 3 ? "step3" : ""
-          } ${onLog >= 4 ? "step4" : ""}`}
-        ></span>
+        {onLog > 1 && (
+          <span
+            className={`${onLog >= 2 ? "accBar" : ""} ${
+              onLog >= 3 ? "step3" : ""
+            } ${onLog >= 4 ? "step4" : ""} ${onLog >= 5 ? "step5" : ""}`}
+          ></span>
+        )}
       </div>
     </div>
   );

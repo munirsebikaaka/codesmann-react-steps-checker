@@ -15,7 +15,6 @@
 }
 .steps-cell {
   margin: 20px;
-  border: 1px solid red;
 }
 
 .show-form {
@@ -92,7 +91,6 @@
 .defBar {
   position: absolute;
   height: 5px;
-
   width: 100%;
   background-color: var(--incorect-color);
 }
@@ -104,16 +102,11 @@
   transition: all 0.4s linear;
 }
 .step3 {
-  position: absolute;
-  height: 5px;
   width: 50%;
-  background-color: var(--corect-color);
-  transition: all 0.4s linear;
 }
-.step3 {
-  position: absolute;
-  height: 5px;
+.step4 {
   width: 75%;
-  background-color: var(--corect-color);
-  transition: all 0.4s linear;
+}
+.step5 {
+  width: 100%;
 }
