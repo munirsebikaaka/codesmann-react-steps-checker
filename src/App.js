@@ -5,14 +5,45 @@ const detailsArr = [
   { type: "text", placeholder: "age", value: {} },
 ];
 const quatesArr = [
-  { quote: "bbbbbb", owner: "moxtech" },
-  { quote: "ccccc", owner: "rex" },
-  { quote: "ddddd", owner: "adams" },
+  {
+    quote:
+      "   My mom once told me that if u cant find something to live for at least find something to die for.",
+    owner: "2PAC SHAKUR",
+  },
+  {
+    quote:
+      "It's a struggle for every black man , we all know our selves only God can judge us.",
+    owner: "Codesmann",
+  },
+  { quote: "Is it a crime to fight for what is mine.", owner: "Adams" },
+  {
+    quote:
+      "If you want to be successful believe in your self and after do something don't just seat thier like a bug of cement.",
+    owner: "Mowzey Radio",
+  },
+  {
+    quote:
+      "Every day if you can you just look your self in the mirror and say that I am special, I am a winner, I am not a quitter, am going to defeat everybody and always believe in your self.",
+    owner: "Mowzey Radio",
+  },
+  {
+    quote:
+      "If shoot to kill is the order from above then this has to end is the order from the lower people.",
+    owner: "Jim Nola",
+  },
+  {
+    quote: "Facebook was not the first thing i built.",
+    owner: "Mac Zukk Bugger",
+  },
+  { quote: "Let God judge the criminals.", owner: "Munir." },
+  { quote: "Reality is wrong dreams are for real.", owner: "2Pac Shakur" },
 ];
 export default function App() {
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
-  const [age, setAge] = useState("");
+  const [age, setAge] = useState();
+
+  let [gen, setGen] = useState([]);
 
   const [log, setLog] = useState(1);
   function increaseLog() {
@@ -36,8 +67,26 @@ export default function App() {
         onAge={age}
         onSetAge={setAge}
       />
-      <GenerationRandomQuate onLogGen={log} onAge={age} onLast={last} />
-      <BtnCell onIncreaseLog={increaseLog} onDecreaseLog={decreaseLog} />
+      <GenerationRandomQuate
+        onLogGen={log}
+        onAge={age}
+        onLast={last}
+        hundleGEN={gen}
+        hundleSetGEN={setGen}
+      />
+      <BtnCell
+        onLog={log}
+        onIncreaseLog={increaseLog}
+        onDecreaseLog={decreaseLog}
+      />
+
+      <FinalResults
+        onLast={last}
+        onAge={age}
+        onFirst={first}
+        hundleGEN={gen}
+        onLog={log}
+      />
     </div>
   );
 }
@@ -46,19 +95,27 @@ function Steps({ onLog }) {
   return (
     <div className="steps-cell">
       <div className="steps">
-        <p className="checked">tic</p>
+        <p className="checked">Start</p>
+        <p className="lev">Start</p>
         <p className={onLog >= 2 ? "checked" : "step"}>
-          {onLog >= 2 ? "tic" : "ex"}
+          {onLog >= 2 ? "Tic" : "Ex"}
         </p>
+        {onLog >= 2 && <p className="lev2">Step{onLog >= 2 ? "1" : ""}</p>}
         <p className={onLog >= 3 ? "checked" : "step"}>
-          {onLog >= 3 ? "tic" : "ex"}
+          {onLog >= 3 ? "Tic" : "Ex"}
         </p>
+        {onLog >= 3 && <p className="lev3">Step{onLog >= 3 ? "2" : ""}</p>}
+
         <p className={onLog >= 4 ? "checked" : "step"}>
-          {onLog >= 4 ? "tic" : "ex"}
+          {onLog >= 4 ? "Tic" : "Ex"}
         </p>
+        {onLog >= 4 && <p className="lev4">Step{onLog >= 4 ? "3" : ""}</p>}
+
         <p className={onLog >= 5 ? "checked" : "step"}>
-          {onLog >= 5 ? "Finised" : "ex"}
+          {onLog >= 5 ? "Finished" : "Ex"}
         </p>
+        {onLog >= 5 && <p className="lev5">Finished</p>}
+
         <span className="defBar"></span>
         {onLog > 1 && (
           <span
@@ -84,57 +141,80 @@ function RegstrationCell({
 }) {
   return (
     <div className="input-element">
-      <input
-        className={onDisLog === 1 ? "show-form" : "hide-form"}
-        type={data[0].type}
-        placeholder={data[0].placeholder}
-        value={onFirst}
-        onChange={(e) => onSetFirst(e.target.value)}
-      />
-
-      <input
-        className={onDisLog === 2 ? "show-form" : "hide-form"}
-        type={data[1].type}
-        placeholder={data[1].placeholder}
-        value={onLast}
-        onChange={(e) => onSetLast(e.target.value)}
-      />
-
-      <input
-        className={onDisLog === 3 ? "show-form" : "hide-form"}
-        type={data[2].type}
-        placeholder={data[2].placeholder}
-        value={onAge}
-        onChange={(e) => onSetAge(e.target.value)}
-      />
+      <div className={onDisLog === 1 ? "show-form" : "hide-form"}>
+        <label>First name</label>
+        <input
+          type={data[0].type}
+          value={onFirst}
+          onChange={(e) => onSetFirst(e.target.value)}
+        />
+      </div>
+      <div className={onDisLog === 2 ? "show-form" : "hide-form"}>
+        <label>Last name</label>
+        <input
+          type={data[1].type}
+          value={onLast}
+          onChange={(e) => onSetLast(e.target.value)}
+        />
+      </div>
+      <div className={onDisLog === 3 ? "show-form" : "hide-form"}>
+        <label>Age</label>
+        <input
+          type={+data[2].type}
+          value={onAge}
+          onChange={(e) => onSetAge(e.target.value)}
+        />
+      </div>
     </div>
   );
 }
-function GenerationRandomQuate({ onLogGen, onAge, onLast }) {
-  let [gen, setGen] = useState([]);
+function GenerationRandomQuate({
+  onLogGen,
+  onAge,
+  onLast,
+  hundleGEN,
+  hundleSetGEN,
+}) {
   function genFunc(arr) {
     if (onAge && onLast)
-      setGen(() => (gen = arr[Math.floor(Math.random() * arr.length)]));
+      hundleSetGEN(
+        () => (hundleGEN = arr[Math.floor(Math.random() * arr.length)])
+      );
     else
       alert(
-        "Please fill in all the inputs for a clear outcome of your details!!"
+        "To generate a random quote first fill in all the inputs for a clear outcome of your details!!"
       );
   }
   return (
-    <div className={onLogGen === 4 ? "show-form" : "hide-form"}>
-      <p>{gen.quote}</p>
-      <h1>{gen.owner}</h1>
+    <div className={onLogGen === 4 ? "show-form4" : "hide-form"}>
+      <p>{hundleGEN.quote}</p>
+      <h1>{hundleGEN.owner}</h1>
       <button className="btn-quote" onClick={() => genFunc(quatesArr)}>
-        GENERATE
+        choose quote
       </button>
     </div>
   );
 }
-function BtnCell({ onDecreaseLog, onIncreaseLog }) {
+function BtnCell({ onDecreaseLog, onIncreaseLog, onLog }) {
   return (
     <div className="btn-cell">
-      <button onClick={onDecreaseLog}>LEFT</button>
-      <button onClick={onIncreaseLog}>RIGHT</button>
+      <button onClick={onDecreaseLog}> &larr;</button>
+
+      <button onClick={onIncreaseLog}> &rarr;</button>
+    </div>
+  );
+}
+function FinalResults({ onFirst, onLast, onAge, hundleGEN, onLog }) {
+  return (
+    <div className={onLog > 4 ? "show-info" : "hide-form"}>
+      <p>Your first name is {onFirst}.</p>
+      <p>Your last name is {onLast}.</p>
+      <p>You are {onAge} years old.</p>
+      <div>
+        <h3>Your favorite quote is;</h3>
+        <p>{hundleGEN.quote}</p>
+        <p>{hundleGEN.owner}</p>
+      </div>
     </div>
   );
 }
