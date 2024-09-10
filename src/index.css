@@ -35,7 +35,8 @@
   font-family: sans-serif;
   text-align: center;
 }
-.show-form4 h1 {
+.show-form4 h1,
+.quotes-res h1 {
   font-size: 1.4rem;
   box-shadow: 0 3px 3px 2px #00000065;
   padding: 5px;
@@ -45,6 +46,7 @@
   font-weight: 400;
   font-style: italic;
 }
+
 .show-form4 button {
   margin-top: -8px;
   margin-bottom: 20px;
@@ -187,4 +189,24 @@ label {
   color: #fff;
   font-size: 1.4rem;
   margin-left: 3px;
+}
+.quotes-res {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+.quotes-res h3 {
+  font-size: 1.6rem;
+  font-weight: 500;
+  font-family: sans-serif;
+}
+.show-info p {
+  font-size: 1.2rem;
+  margin-bottom: -5px;
+  font-family: sans-serif;
+  font-weight: 500;
+}
+.quo {
+  margin-top: -10px;
 }

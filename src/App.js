@@ -210,10 +210,10 @@ function FinalResults({ onFirst, onLast, onAge, hundleGEN, onLog }) {
       <p>Your first name is {onFirst}.</p>
       <p>Your last name is {onLast}.</p>
       <p>You are {onAge} years old.</p>
-      <div>
+      <div className="quotes-res">
         <h3>Your favorite quote is;</h3>
-        <p>{hundleGEN.quote}</p>
-        <p>{hundleGEN.owner}</p>
+        <p className="quo">{hundleGEN.quote}</p>
+        <h1>{hundleGEN.owner}</h1>
       </div>
     </div>
   );
